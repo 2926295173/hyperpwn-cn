@@ -1,7 +1,7 @@
 const {homedir} = require('os')
 const fs = require('fs-extra')
 const path = require('path')
-const yaml = require('js-yaml')
+const yaml = require('yaml')
 const merge = require('lodash.merge')
 const stripAnsi = require('strip-ansi')
 const expandTabs = require('expandtabs')
@@ -153,9 +153,9 @@ class Hyperpwn {
       const cfgPath = path.resolve(homedir(), '.hyperinator', cfgName)
       const libPath = path.resolve(__dirname, 'cfgs', cfgName)
       if (!fs.existsSync(cfgPath)) {
-        const cfg = yaml.load(fs.readFileSync(libPath, 'utf8'))
+        const cfg = yaml.parse(fs.readFileSync(libPath, 'utf8'))
         cfg['global_options'] = defaultShell[process.platform]
-        fs.outputFileSync(cfgPath, yaml.dump(cfg))
+        fs.outputFileSync(cfgPath, yaml.stringify(cfg))
       }
 
       this.store.dispatch({
